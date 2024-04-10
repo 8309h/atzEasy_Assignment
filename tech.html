@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Progress Bar and Custom Select Box</title>
+  <style>
+  /* Progress Bar Styles */
+  #progressBar {
+      width: 100%;
+      height: 20px;
+      background-color: lightgray;
+      border: 1px solid #333;
+    }
+
+    #progressBar::-webkit-progress-value {
+      background-color: darkgray;
+    }
+
+    /* Custom Select Box Styles */
+    .dropdown {
+      text-align: left;
+      position: relative;
+      margin-top: 50px;
+      width: 200px; /* Adjust width as needed */
+    }
+
+    .dropbtn {
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    /* Hide the default arrow icon for select */
+    .dropbtn::-ms-expand {
+      display: none;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: aliceblue;
+      min-width: 160px;
+      width: 100%; /* Adjust width as needed */
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      width: 100%; /* Adjust width as needed */
+    }
+
+    .dropdown-content a:hover {
+      background-color: gainsboro;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Form Styles */
+    #drivingLicenseForm {
+      width: 500px;
+      margin: 0 auto;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    }
+
+    #drivingLicenseForm h2 {
+      margin-top: 0;
+    }
+
+    #drivingLicenseForm label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    #drivingLicenseForm input[type="text"],
+    #drivingLicenseForm input[type="number"],
+    #drivingLicenseForm select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    #drivingLicenseForm select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 8'><polygon points='0,0 7,8 14,0'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+      padding-right: 30px;
+    }
+
+    #drivingLicenseForm input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: forestgreen;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #drivingLicenseForm input[type="submit"]:hover {
+      background-color: darkgreen;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="dropdown">
+    <select class="dropbtn" onchange="showForm(this.value)">
+        <option value="" disabled selected>Choose Issue</option>
+        <option value="All Issues">All Issues</option>
+        <option value="Sales">Sales</option>
+        <option value="Document Pickup">Document Pickup</option>
+        <option value="Document Dispatch">Document Dispatch</option>
+        <option value="Document Return">Document Return</option>
+        <option value="Pavement">Pavement</option>
+    </select>
+  </div>
+
+  <form id="drivingLicenseForm" class="hidden">
+    <h2>Driving License Renewal</h2>
+    <p>Add your details (As per your registered records)</p>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <label for="drivingLicenseType">Nature of Driving License:</label>
+    <select id="drivingLicenseType" name="drivingLicenseType" required>
+      <option value="private">Private</option>
+      <option value="commercial">Commercial</option>
+    </select>
+    <label for="previousDrivingLicense">Type of Previous Driving License:</label>
+    <select id="previousDrivingLicense" name="previousDrivingLicense" required>
+      <option value="paper">Paper Driving License</option>
+      <option value="smart">Smart Driving License</option>
+    </select>
+    <label for="vehicleType">Type of Vehicle:</label>
+    <select id="vehicleType" name="vehicleType" required>
+      <option value="car">Car</option>
+      <option value="motorcycle">Motorcycle</option>
+      <option value="truck">Truck</option>
+    </select>
+    <label for="yearsDriving">Years of Driving Experience:</label>
+    <input type="number" id="yearsDriving" name="yearsDriving" min="0" max="50" required>
+    <label for="trafficViolations">Have you ever been convicted of a traffic violation?</label>
+   
+    <progress id="progressBar" value="0" max="100"></progress>
+    <input type="submit" value="Back">
+  </form>
+
+  <script>
+     function showForm(selectedIssue) {
+      var form = document.getElementById("drivingLicenseForm");
+      form.classList.remove("hidden");
+      console.log("Selected Issue: " + selectedIssue);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById("drivingLicenseForm");
+      const progressBar = document.getElementById("progressBar");
+
+      form.addEventListener("input", function() {
+        const filledElements = Array.from(form.elements).filter(function(element) {
+          return element.value.trim().length > 0;
+        }).length;
+
+        const totalQuestions = 6;
+        const progress = (filledElements / totalQuestions) * 100;
+        progressBar.value = progress;
+      });
+    });
+  </script>
+</body>
+</html>
